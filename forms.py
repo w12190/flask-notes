@@ -16,3 +16,13 @@ class LoginForm(FlaskForm):
     """ Form for logging in a user. """
     username = StringField("Username: ", validators=[InputRequired(), length(min = 3, max = 20)])
     password = PasswordField("Password: ", validators = [length(min = 6)])
+
+class NoteForm(FlaskForm):
+    """ Form for making a new note """
+    title = StringField("Title: ", validators=[InputRequired(), length(max = 100)])
+    content = StringField("Content: ", validators=[InputRequired()])
+
+class EditNoteForm(FlaskForm):
+    """ Form for editing a note """
+    title = StringField("Title: ", validators=[InputRequired(), length(max = 100)])
+    content = StringField("Content: ", validators=[InputRequired()])

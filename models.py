@@ -22,13 +22,26 @@ class User(db.Model):
     first_name = db.Column(db.String(30), nullable = False)
     last_name = db.Column(db.String(30), nullable = False)
 
+    notes = db.relationship('Note', backref='user')
+
+    def __repr__(self):
+        """Show info about the user."""
+
+        return f"<User {self.username} {self.password} {self.email} {self.first_name} {self.last_name}>"
+
     @classmethod
     def register(cls, username, password, email, first_name, last_name):
         """ Registers user with a hashed password, then returns the user. """
         print('User.register()')
         hashed_password = bcrypt.generate_password_hash(password).decode('utf8')
 
-        return cls(username = username, password = hashed_password, email = email, first_name = first_name, last_name = last_name)
+        return cls(
+            username = username,
+            password = hashed_password,
+            email = email,
+            first_name = first_name,
+            last_name = last_name,
+        )
 
     @classmethod
     def authenticate(cls, username, password):
@@ -41,13 +54,16 @@ class User(db.Model):
             return False
 
 
-    # flavor = db.Column(db.String, nullable = False)
-    # size = db.Column(db.String, nullable = False)
-    # rating = db.Column(db.Integer, nullable = False)
-    # image = db.Column(db.String, nullable = False, default = 'https://tinyurl.com/demo-cupcake')
+class Note(db.Model):
+    """ Model representing the 'notes' table in the database. """
 
-# class Note(db.Model):
-#     """ Model representing the 'notes' table in the database. """
+    __tablename__ = 'notes'
+    id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    title = db.Column(db.String(100), nullable = False)
+    content = db.Column(db.String, nullable = False)
+    owner = db.Column(db.String(20), db.ForeignKey('users.username'), nullable = False)
 
-#     __tablename__ = 'notes'
-#     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
+    def __repr__(self):
+        """Show info about the note."""
+
+        return f"<Note {self.id} {self.title} {self.content} {self.owner}>"

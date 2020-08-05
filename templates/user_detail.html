@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} User detail {% endblock %}
+
+{% block content %}
+  <div>
+    <h1>You made it!</h1>
+    <h4>User: {{ user.username }}</h4>
+    <h4>email: {{ user.email }}</h4>
+    <h4>first_name: {{ user.first_name }}</h4>
+    <h4>last_name: {{ user.last_name }}</h4>
+
+    <h4>Notes:</h4>
+    <ul>
+    {% if notes %}
+      {% for note in notes %}
+        <li>
+          <a href="/notes/{{note.id}}/update">{{note.title}}</a>
+          <div>{{note.content}}</div>
+        </li>
+      {% endfor %}
+    {% endif %}
+    </ul>
+    <form action="/users/{{user.username}}/notes/add">
+      <button>New Note</button>
+    </form>
+  </div>
+
+{% endblock %}
